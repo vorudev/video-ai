@@ -1,7 +1,7 @@
 
 // lib/storage.ts
 import { DeleteObjectCommand, GetObjectCommand, ListObjectsV2Command, PutObjectCommand } from '@aws-sdk/client-s3';
-import { s3Client} from './minio';
+import { s3Client, publicS3Client } from './minio';
 import { Upload } from '@aws-sdk/lib-storage';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { files } from '@/db/schema';
@@ -174,8 +174,7 @@ export async function getPresignedUrl(fileName: string, expiresIn = 3600, bucket
         Key: fileName,
       });
   
-      // URL действителен в течение expiresIn секунд (по умолчанию 1 час)
-      const url = await getSignedUrl(s3Client, command, { expiresIn });
+      const url = await getSignedUrl(publicS3Client, command, { expiresIn });
       
       return url;
     } catch (error) {

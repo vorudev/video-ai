@@ -1,6 +1,6 @@
 'use server'
 
-import { s3Client } from '@/lib/minio';
+import { publicS3Client } from '@/lib/minio';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
@@ -13,8 +13,7 @@ export async function getUploadUrlAction(fileName: string, fileType: string) {
     ContentType: fileType,
   });
   
-  // Генерируем presigned URL (действителен 1 час)
-  const uploadUrl = await getSignedUrl(s3Client, command, { 
+  const uploadUrl = await getSignedUrl(publicS3Client, command, { 
     expiresIn: 3600 
   });
   
