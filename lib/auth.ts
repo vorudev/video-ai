@@ -12,6 +12,7 @@ const resend = new Resend(process.env.RESEND_API_KEY as string);
 
 
 export const auth = betterAuth({ 
+    baseURL: process.env.BETTER_AUTH_URL || "https://clipreel.ru",
     rateLimit: {
         enabled: true,
         window: 10,
