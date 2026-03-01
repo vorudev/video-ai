@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
     		return [
     			{
     				source: '/api/c15t/:path*',
-    				destination: `${process.env.NEXT_PUBLIC_C15T_URL}/:path*`,
+    				destination: `https://clipreel-europe-onboarding.c15t.dev/:path*`,
     			},
     		];
     	}
