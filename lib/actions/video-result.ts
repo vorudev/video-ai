@@ -199,97 +199,112 @@ interface ResultProps {
         };
       }
   
-      const story = await getRedditStory();
-  
-      if (story.data !== null) {
-        const result: TTSResponse = await synthesizeSpeech({
-          text: textEnabled && textContent ? textContent : story.data.story,
-          voice: voiceName,
-          speed: voiceSpeed,
-          generationType: 'video'
-        });
-        
-        const videoPath = await getVideoById(videoId);
-  
-        console.log(result.success, result.fileName);
-         
-        const videoExists = await checkFileExists(videoPath.result[0].filePath);
-        if (!videoExists) {
-          return { 
-            success: false, 
-            error: `Видео файл не найден в MinIO: ${videoPath.result[0].filePath}` 
-          };
+      let ttsText: string;
+
+      if (textEnabled && textContent) {
+        ttsText = textContent;
+      } else {
+        const story = await getRedditStory();
+        if (!story.data) {
+          return { success: false, error: 'Нет доступных историй для генерации. Добавьте истории или используйте свой текст.' };
         }
-  
-        const audioExists = await checkFileExists(result.fileName);
-        if (!audioExists) {
-          return { 
-            success: false, 
-            error: `Аудио файл не найден в MinIO` 
-          };
-        }
-  
-        // НОВОЕ: Генерируем субтитры через AssemblyAI
-        console.log('Генерация субтитров...');
-        const subtitles = await generateSubtitles(result.fileName);
-        console.log('Субтитры сгенерированы:', subtitles.length);
-  
-        const ffmpegServiceUrl = process.env.FFMPEG_SERVICE_URL || 'http://ffmpeg-service:3001';
-        const outputKey = `users/${session.user.name}/video/result_${crypto.randomUUID()}.mp4`;
-      
-        const ffmpegResponse = await fetch(`${ffmpegServiceUrl}/merge`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            videoKey: videoPath.result[0].filePath,
-            audioKey: result.fileName,
-            outputKey: outputKey,
-            subtitles: subtitles, // ИЗМЕНЕНО: используем реальные субтитры вместо моковых
-            subtitleStyle: {
-                fontName: 'Arial', // или 'Arial-Bold', 'Impact'
-                fontSize: 14,
-                outlineWidth: 3,
-                backgroundColor: 'transparent', // без фона (или 'black@0.5' для полупрозрачного)
-                position: 'center', // центр экрана
-                bold: true,
-                uppercase: true, // ЗАГЛАВНЫЕ БУКВЫ
-                alignment: 'center',
-                marginV: 50 // отступ от центра
-              }
-          })
-        });
-    
-        const ffmpegResult = await ffmpegResponse.json();
-    
-        if (!ffmpegResponse.ok) {
-          return ffmpegResult;
-        }
-        
-        const insertResult = await db.insert(userResult).values({
-          userId: session.user.id,
-          fileName: `${Date.now()}.mp4`,
-          fileType: 'video',
-          filePath: outputKey,
-          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-        }).returning();
-        
-        if (!insertResult) {
-          return { success: false, error: 'Failed to insert result' };
-        }
-  
-        const limitUpdate = await db
-          .update(usageTrackingTable)
-          .set({ 
-            videoGenerationsUsed: userUsage.videoGenerationsUsed + 1,
-            updatedAt: new Date()
-          })
-          .where(eq(usageTrackingTable.userId, session.user.id));
-     
-        console.log('Результат сохранен:', result);
-        console.log('Успешно объединено:', ffmpegResult);  
-        
-        return outputKey;
+        ttsText = story.data.story;
       }
+
+      const result: TTSResponse = await synthesizeSpeech({
+        text: ttsText,
+        voice: voiceName,
+        speed: voiceSpeed,
+        generationType: 'video'
+      });
+
+      if (!result.success || !result.fileName) {
+        return { success: false, error: result.error || 'Ошибка синтеза речи' };
+      }
+      
+      const videoPath = await getVideoById(videoId);
+
+      if (!videoPath.result?.[0]?.filePath) {
+        return { success: false, error: 'Видео фон не найден' };
+      }
+
+      console.log(result.success, result.fileName);
+       
+      const videoExists = await checkFileExists(videoPath.result[0].filePath);
+      if (!videoExists) {
+        return { 
+          success: false, 
+          error: `Видео файл не найден в MinIO: ${videoPath.result[0].filePath}` 
+        };
+      }
+
+      const audioExists = await checkFileExists(result.fileName);
+      if (!audioExists) {
+        return { 
+          success: false, 
+          error: 'Аудио файл не найден в MinIO' 
+        };
+      }
+
+      // TODO: заменить на Yandex SpeechKit STT
+      const subtitles: { start: number; end: number; text: string }[] = [];
+
+      const ffmpegServiceUrl = process.env.FFMPEG_SERVICE_URL || 'http://ffmpeg-service:3001';
+      const outputKey = `users/${session.user.name}/video/result_${crypto.randomUUID()}.mp4`;
+    
+      const ffmpegResponse = await fetch(`${ffmpegServiceUrl}/merge`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          videoKey: videoPath.result[0].filePath,
+          audioKey: result.fileName,
+          outputKey: outputKey,
+          subtitles: subtitles,
+          subtitleStyle: {
+              fontName: 'Arial',
+              fontSize: 14,
+              outlineWidth: 3,
+              backgroundColor: 'transparent',
+              position: 'center',
+              bold: true,
+              uppercase: true,
+              alignment: 'center',
+              marginV: 50
+            }
+        })
+      });
+  
+      const ffmpegResult = await ffmpegResponse.json();
+  
+      if (!ffmpegResponse.ok) {
+        return { success: false, error: ffmpegResult.error || 'Ошибка ffmpeg' };
+      }
+      
+      const insertResult = await db.insert(userResult).values({
+        userId: session.user.id,
+        fileName: `${Date.now()}.mp4`,
+        fileType: 'video',
+        filePath: outputKey,
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      }).returning();
+      
+      if (!insertResult) {
+        return { success: false, error: 'Failed to insert result' };
+      }
+
+      await db
+        .update(usageTrackingTable)
+        .set({ 
+          videoGenerationsUsed: userUsage.videoGenerationsUsed + 1,
+          updatedAt: new Date()
+        })
+        .where(eq(usageTrackingTable.userId, session.user.id));
+   
+      console.log('Результат сохранен:', result);
+      console.log('Успешно объединено:', ffmpegResult);  
+      
+      return outputKey;
+
     } catch (error) { 
       console.log(error);
       return { success: false, error: 'Ошибка генерации видео' };
