@@ -1,0 +1,1 @@
+ALTER TABLE "subscriptions" ALTER COLUMN "tier" SET DEFAULT 'basic';

@@ -1,0 +1,1 @@
+ALTER TABLE "userResult" ADD COLUMN "file_type" varchar(100) NOT NULL;

@@ -1,0 +1,2 @@
+ALTER TABLE "subscriptions" RENAME COLUMN "video_generations_per_month" TO "videos_per_day";--> statement-breakpoint
+ALTER TABLE "subscriptions" RENAME COLUMN "max_video_duration_seconds" TO "video_duration";

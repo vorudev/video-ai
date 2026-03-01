@@ -1,0 +1,25 @@
+FROM node:18-alpine
+
+# Устанавливаем ffmpeg и шрифты
+RUN apk add --no-cache \
+    ffmpeg \
+    fontconfig \
+    ttf-dejavu \
+    msttcorefonts-installer \
+    && update-ms-fonts
+
+WORKDIR /app
+
+# Копируем package.json
+COPY package.json package-lock.json* ./
+RUN npm install
+
+# Копируем исходники
+COPY src ./src
+
+# Создаем директории для временных файлов
+RUN mkdir -p /app/temp/input /app/temp/output
+
+EXPOSE 3001
+
+CMD ["npx", "ts-node", "src/index.ts"]
