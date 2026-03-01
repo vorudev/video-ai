@@ -1,4 +1,4 @@
-'use client'
+'use server'
 import { RedditStory } from "@/components/forms/reddit-story-form"
 import { VoiceStory } from "@/components/forms/voice-form"
 import { auth } from "@/lib/auth"
