@@ -19,9 +19,9 @@ export const auth = betterAuth({
        
     },
     trustedOrigins: [
-        "http://localhost",
-        "http://localhost:3000",
-        "http://localhost:80"
+        "https://clipreel.ru",
+        "https://clipreel.ru:3000",
+        "https://clipreel.ru:80"
       ],
     
 socialProviders: {
