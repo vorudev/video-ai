@@ -1,5 +1,6 @@
 'use server';
 import { auth } from "@/lib/auth";
+import LogoutButton from "@/components/forms/auth/logout-button";
 import { headers } from "next/headers";
 import { getUserSubscription } from "@/lib/actions/users";
 import {
@@ -101,9 +102,7 @@ export default async function ProfilePage() {
 
           {/* Logout Button */}
        
-            <button className="w-full px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium">
-              Выйти из аккаунта
-            </button>
+            <LogoutButton />
         
         </div>
       </div>

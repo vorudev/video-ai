@@ -187,7 +187,7 @@ token,
 />
                 </div>
                
-                <Button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white w-full h-[48px] text-[12px] uppercase" disabled={isLoading} >
+                <Button type="submit" className="bg-black hover:bg-blue-600 text-white w-full h-[48px] text-[12px] uppercase" disabled={isLoading} >
 
              {isLoading ? <Loader2Icon className="size-4 animate-spin"></Loader2Icon> : "Подтвердить"}
                 </Button>

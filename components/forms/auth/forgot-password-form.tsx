@@ -111,7 +111,7 @@ const { error } = await authClient.requestPasswordReset({
         />
                 </div>
                
-                <Button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white w-full h-[48px] text-[12px] uppercase" disabled={isLoading} >
+                <Button type="submit" className="bg-black hover:bg-blue-600 text-white w-full h-[48px] text-[12px] uppercase" disabled={isLoading} >
 
              {isLoading ? <Loader2Icon className="size-4 animate-spin"></Loader2Icon> : "Подтвердить" }
                 </Button>
@@ -130,7 +130,7 @@ const { error } = await authClient.requestPasswordReset({
       </Card>
       <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
         Нажимая на кнопку "Подтвердить", вы соглашаетесь с {""}
-        <a href="# " className="underline text-blue-500 underline-offset-4">Политикой конфиденциальности</a>.
+        <Link href="/privacy-policy" className="underline text-blue-500 underline-offset-4">Политикой конфиденциальности</Link>.
       </div>
     </div>
   )

@@ -49,7 +49,7 @@ const ForgotPasswordEmail = (props: ForgotPasswordEmailProps) => {
             </Text>
 
             <Button 
-              className="bg-blue-500 text-white mb-4 px-6 py-3 rounded-md text-center block mx-auto" 
+              className="bg-black text-white mb-4 px-6 py-3 rounded-md text-center block mx-auto" 
               href={`${props.resetUrl}reset-password`}
             >
               Восстановление пароля
