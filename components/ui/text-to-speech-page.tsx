@@ -157,7 +157,7 @@ interface Voices {
                    onClick={()=> {setSelectedResult(`${result.filePath}`)}}
                  >
                    <audio
-                     src={`http://localhost:9000/media/${result.filePath}`}
+                     src={`https://clipreel.ru/s3/media/${result.filePath}`}
                      className="w-full object-cover cursor-pointer"
                      muted
                      controls
@@ -252,7 +252,7 @@ interface Voices {
         className="w-full"
       >
         <source 
-          src={`http://localhost:9000/media/${displayAudioUrl}`} 
+          src={`https://clipreel.ru/s3/media/${displayAudioUrl}`} 
           type="audio/mpeg" 
         />
         Ваш браузер не поддерживает аудио.
@@ -387,7 +387,7 @@ interface Voices {
                    onClick={()=> {setSelectedResult(`${result.filePath}`)}}
                  >
                    <audio
-                     src={`http://localhost:9000/media/${result.filePath}`}
+                     src={`https://clipreel.ru/s3/media/${result.filePath}`}
                      className="w-full object-cover cursor-pointer"
                      muted
                      controls

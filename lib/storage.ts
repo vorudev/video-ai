@@ -34,7 +34,7 @@ export async function uploadFile(
     await s3Client.send(command);
 
     // Возвращаем URL файла
-    return `http://localhost:9000/${bucketName}/${fileName}`;
+    return `https://clipreel.ru/s3/${bucketName}/${fileName}`;
   } catch (error) {
     console.error('Upload error:', error);
     throw error;
@@ -145,7 +145,7 @@ export async function listFiles(  bucketName: string, prefix?: string) {
       key: item.Key,
       size: item.Size,
       lastModified: item.LastModified,
-      url: `http://localhost:9000/${bucketName}/${item.Key}`
+      url: `https://clipreel.ru/s3/${bucketName}/${item.Key}`
     })) || [];
   } catch (error) {
     console.error('List error:', error);

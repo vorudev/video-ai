@@ -75,7 +75,7 @@ interface Props {
                 key={displayVideoUrl} // Принудительная перезагрузка при смене видео
               >
                 <source 
-                  src={`http://localhost:9000/media/${displayVideoUrl}`} 
+                  src={`https://clipreel.ru/s3/media/${displayVideoUrl}`} 
                   type="video/mp4" 
                 />
                 Ваш браузер не поддерживает видео.

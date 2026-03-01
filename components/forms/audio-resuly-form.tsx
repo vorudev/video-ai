@@ -90,7 +90,7 @@ interface Props {
                 className="w-full"
               >
                 <source 
-                  src={`http://localhost:9000/media/${displayAudioUrl}`} 
+                  src={`https://clipreel.ru/s3/media/${displayAudioUrl}`} 
                   type="audio/mpeg" 
                 />
                 Ваш браузер не поддерживает аудио.

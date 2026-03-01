@@ -147,7 +147,7 @@ interface Voices {
               {selectedVideo ? (
                 <div className="flex items-center gap-2">
                   <video 
-                    src={`http://localhost:9000/media/${selectedVideo}`}
+                    src={`https://clipreel.ru/s3/media/${selectedVideo}`}
                     className="w-12 h-12 object-cover rounded"
                     muted
                   />
@@ -209,7 +209,7 @@ interface Voices {
              onClick={()=> {setSelectedResult(`${result.filePath}`)}}
            >
              <video 
-               src={`http://localhost:9000/media/${result.filePath}`}
+               src={`https://clipreel.ru/s3/media/${result.filePath}`}
                className="w-full h-[200px] object-cover cursor-pointer"
                muted
                controls
@@ -293,7 +293,7 @@ interface Voices {
               className="rounded-lg cursor-pointer overflow-hidden aspect-[9/16] relative group"
             >
               <video 
-                src={`http://localhost:9000/media${video.filePath}`}
+                src={`https://clipreel.ru/s3/media${video.filePath}`}
                 className="w-full h-full object-cover"
                 muted
                 loop
@@ -344,7 +344,7 @@ interface Voices {
         key={displayVideoUrl}
       >
         <source 
-          src={`http://localhost:9000/media/${displayVideoUrl}`} 
+          src={`https://clipreel.ru/s3/media/${displayVideoUrl}`} 
           type="video/mp4" 
         />
         Ваш браузер не поддерживает видео.
@@ -472,7 +472,7 @@ interface Voices {
                     {selectedVideo ? (
                       <div className="flex items-center gap-2">
                         <video 
-                          src={`http://localhost:9000/media/${selectedVideo}`}
+                          src={`https://clipreel.ru/s3/media/${selectedVideo}`}
                           className="w-12 h-12 object-cover rounded"
                           muted
                         />
@@ -534,7 +534,7 @@ interface Voices {
                    onClick={()=> {setSelectedResult(`${result.filePath}`)}}
                  >
                    <video 
-                     src={`http://localhost:9000/media/${result.filePath}`}
+                     src={`https://clipreel.ru/s3/media/${result.filePath}`}
                      className="w-full h-[200px] object-cover cursor-pointer"
                      muted
                      controls
@@ -621,7 +621,7 @@ interface Voices {
                     className="rounded-lg cursor-pointer overflow-hidden aspect-[9/16] relative group"
                   >
                     <video 
-                      src={`http://localhost:9000/media${video.filePath}`}
+                      src={`https://clipreel.ru/s3/media${video.filePath}`}
                       className="w-full h-full object-cover"
                       muted
                       loop

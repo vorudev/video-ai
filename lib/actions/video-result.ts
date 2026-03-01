@@ -29,7 +29,7 @@ interface ResultProps {
   });
     
   const s3Client = new S3Client({
-    endpoint: `http://${process.env.MINIO_ENDPOINT || 'localhost'}:${process.env.MINIO_PORT || '9000'}`,
+    endpoint: `https://${process.env.MINIO_ENDPOINT || 'localhost'}:${process.env.MINIO_PORT || '9000'}`,
     region: 'us-east-1',
     credentials: {
       accessKeyId: process.env.MINIO_ACCESS_KEY || 'minioadmin',
