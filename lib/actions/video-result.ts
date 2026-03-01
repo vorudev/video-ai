@@ -4,17 +4,17 @@ import { synthesizeSpeech } from "./TTS";
 import { getRedditStory } from "./reddit-stories";
 import { AssemblyAI } from 'assemblyai';
 import { getTierLimits, getUserInformation, getUserSubscription } from "./users";
-import { NextRequest, NextResponse } from 'next/server';
-import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
+import { GetObjectCommand } from '@aws-sdk/client-s3';
 import type { TTSResponse } from "./TTS";
 import { auth } from "../auth";
 import { headers } from "next/headers";
 import { eq } from "drizzle-orm";
 import { db } from "@/db/drizzle";
-import { userResult, usageTracking as usageTrackingTable } from "@/db/schema"; // переименуйте импорт
+import { userResult, usageTracking as usageTrackingTable } from "@/db/schema";
 import { getVideoById } from "./bg-video";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { Readable } from "stream";
+import { s3Client } from "@/lib/minio";
 
 interface ResultProps { 
     videoId: string,
@@ -26,16 +26,6 @@ interface ResultProps {
   
   const assemblyClient = new AssemblyAI({
       apiKey: process.env.ASSEMBLYAI_API_KEY!,
-  });
-    
-  const s3Client = new S3Client({
-    endpoint: `https://${process.env.MINIO_ENDPOINT || 'localhost'}:${process.env.MINIO_PORT || '9000'}`,
-    region: 'us-east-1',
-    credentials: {
-      accessKeyId: process.env.MINIO_ACCESS_KEY || 'minioadmin',
-      secretAccessKey: process.env.MINIO_SECRET_KEY || 'minioadmin',
-    },
-    forcePathStyle: true,
   });
   
   const BUCKET = "media";
@@ -225,24 +215,18 @@ interface ResultProps {
          
         const videoExists = await checkFileExists(videoPath.result[0].filePath);
         if (!videoExists) {
-          return NextResponse.json(
-            { 
-              success: false, 
-              error: `Видео файл не найден в MinIO: ${videoPath.result[0].filePath}` 
-            },
-            { status: 404 }
-          );
+          return { 
+            success: false, 
+            error: `Видео файл не найден в MinIO: ${videoPath.result[0].filePath}` 
+          };
         }
   
         const audioExists = await checkFileExists(result.fileName);
         if (!audioExists) {
-          return NextResponse.json(
-            { 
-              success: false, 
-              error: `Аудио файл не найден в MinIO` 
-            },
-            { status: 404 }
-          );
+          return { 
+            success: false, 
+            error: `Аудио файл не найден в MinIO` 
+          };
         }
   
         // НОВОЕ: Генерируем субтитры через AssemblyAI
@@ -290,7 +274,7 @@ interface ResultProps {
         }).returning();
         
         if (!insertResult) {
-          return NextResponse.json({ error: 'Failed to insert result' }, { status: 500 });
+          return { success: false, error: 'Failed to insert result' };
         }
   
         const limitUpdate = await db
