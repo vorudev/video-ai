@@ -42,9 +42,9 @@ emailAndPassword: {
          requireEmailVerification: true,
         sendResetPassword: async ({user, url, token}) => {
            await resend.emails.send({
-                from: 'noreply@updates.vsedlyadomasantehnika.by',
+                from: 'noreply@updates.clipreel.ru',
                 to: user.email,
-                subject: 'Reset Password',
+                subject: 'Восстановление пароля',
                 react: ForgotPasswordEmail({username: user.name, resetUrl: url, userEmail: user.email}) 
             })
         }
@@ -54,9 +54,9 @@ emailAndPassword: {
     sendOnSignUp: true,
     sendVerificationEmail: async ({user, url}) => {
      await  resend.emails.send({
-            from: 'Acme <onboarding@resend.dev>',
+            from: 'noreply@updates.clipreel.ru',
             to: user.email,
-            subject: 'Verify Email',
+            subject: 'Подтверждение регистрации',
             react: EmailVerificationEmail({username: user.name || '', verificationUrl: url, userEmail: user.email})
         })
     }
