@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import {useRouter} from "next/navigation"
 import { authClient } from "@/lib/auth-client"
-import { translateError } from "@/components/toast-helper"
 import { toast } from "sonner"
 
 const totpSchema = z.object({
@@ -32,7 +31,7 @@ export function TotpForm() {
         onError: (ctx) => {
       // ctx.error содержит объект ошибки
       const errorMessage = ctx.error.message || "Ошибка входа";
-      toast.error(translateError(errorMessage));
+      toast.error('ошибка входа');
       console.log(ctx.error);
     },
         onSuccess: () => {

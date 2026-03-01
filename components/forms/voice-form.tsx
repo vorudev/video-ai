@@ -36,7 +36,7 @@ export function VoiceStory({ voice }: VoiceFormProps) {
     const form = useForm<z.infer<typeof voiceFormSchema>>({
         resolver: zodResolver(voiceFormSchema),
         defaultValues: {
-           voiceName: voice?.voice
+           voiceName: voice?.voiceName,
 
         },
     });

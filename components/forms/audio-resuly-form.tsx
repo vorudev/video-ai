@@ -38,7 +38,7 @@ interface Props {
     
     // Проверяем превышение лимита (используйте нужное поле для TTS)
     const isLimitExceeded = currentLimits 
-      ? userInfo.ttsGenerationsUsed >= currentLimits.ttsPerDay 
+      ? userInfo.videoGenerationsUsed >= currentLimits.videosPerDay 
       : false;
   
     // Определяем какое аудио показывать: selectedResult или новое сгенерированное

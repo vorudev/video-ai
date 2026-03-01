@@ -4,7 +4,7 @@ import { db } from "@/db/drizzle";
 import { sql, eq } from "drizzle-orm";
 
 
-export async function createVoice(data: Omit<Voice, "id" | "createdAt" | "updatedAt">) { 
+export async function createVoice(data: Omit<Voice, "id" | "createdAt" | "updatedAt" | "previewPath">) { 
  try { 
     await db.insert(voices).values(data)
     return { 

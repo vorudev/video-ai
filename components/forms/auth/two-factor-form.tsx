@@ -18,7 +18,6 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
-import { translateError } from "@/components/toast-helper"
 
 
 const TwoFactorAuthSchema = z.object({
@@ -70,11 +69,11 @@ export function TwoFactorAuthForm({isEnabled}: {isEnabled: boolean}) {
 async function handleEnableTwoFactorAuth(data: TwoFactorAuthSchema) {
     const result = await authClient.twoFactor.enable({
         password: data.password,
-        issuer: "Все для дома",
+        issuer: "clipreel",
     })
     if (result.error) {
         const errorMessage = result.error.message || "Ошибка входа";
-        toast.error(translateError(errorMessage));
+        toast.error('ошибка входа');
     }
     {
         setTwoFactorData(result.data)
@@ -150,7 +149,7 @@ function QRCodeVerify({
         onError: (ctx) => {
       // ctx.error содержит объект ошибки
       const errorMessage = ctx.error.message || "Ошибка входа";
-      toast.error(translateError(errorMessage));
+      toast.error('ошибка входа');
       console.log(ctx.error);
 
     },

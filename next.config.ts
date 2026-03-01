@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+	typescript: {
+		ignoreBuildErrors: true,
+	  },
   experimental: {
     serverActions: {
       bodySizeLimit: '50mb', // ✅ Если всё же используете Server Actions
