@@ -54,7 +54,11 @@ services:
       - app_network
 
   app:
-    build: .
+    build:
+    context: .
+    args:
+      - RESEND_API_KEY=re_bxUUxnaG_HC8yieURHHeVAgP2DYNxB1Xf
+      - NEXT_PUBLIC_C15T_URL=https://clipreel-europe-onboarding.c15t.dev
     container_name: my_app
     restart: always
     environment:
