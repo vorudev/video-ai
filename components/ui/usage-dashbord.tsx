@@ -16,8 +16,6 @@ export default function UsageLimits({
     // Находим лимиты для текущего тира пользователя
     const currentLimits = tierLimits.find(limit => limit.tier === subscription.tier);
     
-    console.log("currentLimits", currentLimits); // Добавьте эту проверку
-    
     if (!currentLimits) return null;
   
     // Используйте правильные названия полей из вашей схемы БД
