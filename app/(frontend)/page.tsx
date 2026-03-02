@@ -164,7 +164,7 @@ export default async function WelcomePage() {
                 </div>
                 <h3 className="md:text-2xl text-[16px] font-[600] md:mb-4 mb-2 text-gray-900">Безопасность данных</h3>
                 <p className="text-gray-600 text-[14px] md:text-md leading-relaxed">
-                  Ваши данные защищены. Мы используем современные методы шифрования и не передаем данные третьим лицам.
+                  Ваши данные защищены. Мы используем современные методы шифрования.
                 </p>
               </div>
             </div>
