@@ -224,8 +224,8 @@ export default async function WelcomePage() {
                 </div>
                 <h3 className="text-[16px] md:text-2xl font-[600] mb-2 text-gray-900">Premium</h3>
                 <div className="md:mb-6 mb-2">
-                  <span className="md:text-5xl text-2xl font-[700] text-gray-900">₽300</span>
-                  <span className="text-gray-600 ml-2">/месяц</span>
+                  <span className="md:text-5xl text-2xl font-[700] text-gray-900">49₽</span>
+                  <span className="text-gray-600 ml-2">/неделя</span>
                 </div>
                 <ul className="space-y-4 md:mb-8 mb-5">
                   <li className="flex items-center gap-3">
